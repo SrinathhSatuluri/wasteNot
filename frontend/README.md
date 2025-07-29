@@ -109,7 +109,7 @@ wasteNot/
 - Roadmap
 - License and inspiration
 
-Let me know if you want to add a FAQ, deployment guide, or anything else!
+
 
 ---
 
