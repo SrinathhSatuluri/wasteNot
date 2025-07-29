@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth'));
-
+app.use('/api/donations', require('./routes/donations'));
 
 
 // Health check route
