@@ -1,42 +1,473 @@
 {
 	"info": {
 		"_postman_id": "380d767a-5271-47a5-b07f-e87096acde53",
-		"name": "wasteNot API",
+		"name": "WasteNot API - Complete Collection",
+		"description": "Complete API collection for WasteNot food waste rescue platform",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "36853051"
 	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
 	"item": [
 		{
-			"name": "Register endpoint",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"donor\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "login"]
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('token', response.token);",
+									"}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Updated\",\n  \"email\": \"john.updated@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "profile"]
+						}
+					}
+				}
+			]
 		},
 		{
-			"name": "login endpoint",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
+			"name": "Donations",
+			"item": [
+				{
+					"name": "Create Donation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Fresh Bread from Downtown Bakery\",\n  \"description\": \"50 loaves of fresh bread available for pickup\",\n  \"quantity\": \"50 loaves\",\n  \"pickupTime\": \"2024-01-15T18:00:00.000Z\",\n  \"location\": \"123 Main St, Downtown\",\n  \"latitude\": 40.7128,\n  \"longitude\": -74.0060\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/donations",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "donations"]
+						}
+					}
+				},
+				{
+					"name": "Get All Donations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/donations",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "donations"]
+						}
+					}
+				},
+				{
+					"name": "Get Donations with Location Filter",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/donations?latitude=40.7128&longitude=-74.0060&radius=5",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "donations"],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "40.7128"
+								},
+								{
+									"key": "longitude",
+									"value": "-74.0060"
+								},
+								{
+									"key": "radius",
+									"value": "5"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Claim Donation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/donations/:id/claim",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "donations", ":id", "claim"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "donation_id_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My Donations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/donations/my",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "donations", "my"]
+						}
+					}
+				},
+				{
+					"name": "Delete Donation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/donations/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "donations", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "donation_id_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My Pickups",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/donations/my-pickups",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "donations", "my-pickups"]
+						}
+					}
+				},
+				{
+					"name": "Complete Pickup",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/donations/:id/complete",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "donations", ":id", "complete"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "donation_id_here"
+								}
+							]
+						}
+					}
+				}
+			]
 		},
 		{
-			"name": "Create donation",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
+			"name": "Requests",
+			"item": [
+				{
+					"name": "Create Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Urgent Need for Fresh Vegetables\",\n  \"description\": \"We need fresh vegetables for our daily meal service\",\n  \"items\": [\"Carrots\", \"Broccoli\", \"Spinach\"],\n  \"quantity\": \"100kg\",\n  \"urgency\": \"high\",\n  \"deadline\": \"2024-01-16T20:00:00.000Z\",\n  \"location\": \"456 Shelter Ave, Downtown\",\n  \"latitude\": 40.7589,\n  \"longitude\": -73.9851,\n  \"notes\": \"Any fresh vegetables would be greatly appreciated\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/requests",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "requests"]
+						}
+					}
+				},
+				{
+					"name": "Get All Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/requests",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "requests"]
+						}
+					}
+				},
+				{
+					"name": "Get Requests with Location Filter",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/requests?latitude=40.7589&longitude=-73.9851&radius=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "requests"],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "40.7589"
+								},
+								{
+									"key": "longitude",
+									"value": "-73.9851"
+								},
+								{
+									"key": "radius",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/requests/my",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "requests", "my"]
+						}
+					}
+				},
+				{
+					"name": "Update Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated: Urgent Need for Fresh Vegetables\",\n  \"description\": \"Updated description\",\n  \"items\": [\"Carrots\", \"Broccoli\", \"Spinach\", \"Tomatoes\"],\n  \"quantity\": \"150kg\",\n  \"urgency\": \"critical\",\n  \"deadline\": \"2024-01-17T20:00:00.000Z\",\n  \"location\": \"456 Shelter Ave, Downtown\",\n  \"status\": \"partially_fulfilled\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/requests/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "requests", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "request_id_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Request",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/requests/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "requests", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "request_id_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Fulfill Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/requests/:id/fulfill",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "requests", ":id", "fulfill"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "request_id_here"
+								}
+							]
+						}
+					}
+				}
+			]
 		},
 		{
-			"name": "list donation",
+			"name": "Health Check",
 			"request": {
 				"method": "GET",
-				"header": []
-			},
-			"response": []
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/health",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "health"]
+				}
+			}
 		}
 	]
 }

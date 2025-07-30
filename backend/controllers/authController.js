@@ -45,3 +45,42 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Server error.' });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const userId = req.user.id;
+
+    if (!name || !email) {
+      return res.status(400).json({ message: 'Name and email are required.' });
+    }
+
+    // Check if email is already taken by another user
+    const existingUser = await User.findOne({ email, _id: { $ne: userId } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already in use.' });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { name, email },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.json({ 
+      message: 'Profile updated successfully.',
+      user: { 
+        id: user._id, 
+        name: user.name, 
+        email: user.email, 
+        role: user.role 
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error.' });
+  }
+};

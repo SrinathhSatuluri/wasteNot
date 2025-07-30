@@ -20,9 +20,11 @@ Every year, millions of pounds of edible food are thrown away while people go hu
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** Next.js (React), Tailwind CSS
+- **Frontend:** Next.js (React), Tailwind CSS, shadcn/ui
 - **Backend:** Node.js, Express.js, MongoDB (Mongoose)
 - **Authentication:** JWT (JSON Web Tokens)
+- **Real-time:** Socket.IO for notifications
+- **Maps:** Leaflet with React-Leaflet
 - **API Testing:** Postman (collection included)
 - **Deployment:** Vercel (frontend), MongoDB Atlas (database)
 
@@ -32,11 +34,17 @@ Every year, millions of pounds of edible food are thrown away while people go hu
 
 - **Role-based authentication:** Donor, Volunteer, Agency
 - **Secure JWT login & registration**
-- **Donation posts:** Donors can create, agencies/volunteers can claim
-- **Role-based dashboards** (coming soon)
+- **Food donation management:** Create, claim, and track donations
+- **Food request system:** Post and fulfill food requests
+- **Interactive map interface:** View donations and requests on a map
+- **Real-time notifications:** Socket.IO powered updates
+- **Volunteer management:** Agencies can view and manage volunteers
+- **Geolocation support:** Location-based filtering and search
+- **Role-based dashboards:** Customized views for each user type
 - **API-first design:** Clean separation of backend and frontend
-- **Modern, responsive UI**
-- **API tested with Postman**
+- **Modern, responsive UI:** Built with Tailwind CSS and shadcn/ui
+- **Error handling:** Comprehensive error boundaries and validation
+- **API tested with Postman:** Complete test collection included
 - **Ready for cloud deployment**
 
 ---
@@ -63,6 +71,8 @@ npm install
 # Create a .env file with:
 # MONGO_URI=your_mongodb_uri
 # JWT_SECRET=your_random_secret
+# PORT=5000
+# FRONTEND_URL=http://localhost:3000
 npm run dev
 ```
 
@@ -71,10 +81,51 @@ npm run dev
 ```bash
 cd frontend
 npm install
+# Create a .env.local file with:
+# NEXT_PUBLIC_API_URL=http://localhost:5000
 npm run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) to view the app.
+
+---
+
+## 🔧 Critical Fixes & Improvements
+
+### ✅ Completed Fixes
+
+1. **Centralized API Configuration**
+   - Created `frontend/lib/api.ts` with centralized API endpoints
+   - Replaced hardcoded URLs with environment variables
+   - Added `NEXT_PUBLIC_API_URL` configuration
+
+2. **Error Handling**
+   - Implemented comprehensive Error Boundary component
+   - Added error boundaries to root layout
+   - Graceful error handling throughout the application
+
+3. **Form Validation**
+   - Created validation utility (`frontend/lib/validation.ts`)
+   - Common validation rules for forms
+   - Type-safe validation functions
+
+4. **Loading States**
+   - Created reusable LoadingSpinner component
+   - LoadingPage and LoadingCard variants
+   - Consistent loading states across the app
+
+5. **Environment Configuration**
+   - Frontend environment variables in `.env.local`
+   - Backend environment variables in `.env`
+   - Proper configuration documentation
+
+### 🚀 Performance & UX Improvements
+
+- **Real-time Updates:** Socket.IO integration for live notifications
+- **Interactive Maps:** Leaflet integration with geolocation support
+- **Responsive Design:** Mobile-friendly interface
+- **Type Safety:** Comprehensive TypeScript implementation
+- **API Consistency:** Standardized API request patterns
 
 ---
 
@@ -128,11 +179,17 @@ We welcome contributions from the community!
 ## 📈 Roadmap
 
 - [x] User authentication (register/login)
-- [ ] Donation post creation & claiming
-- [ ] Role-based dashboards
+- [x] Donation post creation & claiming
+- [x] Role-based dashboards
+- [x] Interactive map interface
+- [x] Real-time notifications
+- [x] Volunteer management
+- [x] Food request system
+- [x] Geolocation support
+- [ ] Social login (Google, Apple, Meta)
 - [ ] Notifications (email/SMS)
 - [ ] Impact analytics for donors/agencies
-- [ ] Mobile-friendly UI
+- [ ] Mobile app development
 - [ ] Multi-language support
 
 ---
