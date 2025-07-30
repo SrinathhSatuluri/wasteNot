@@ -1,11 +1,7 @@
-# Ignore backend files for frontend deployment
+# Only exclude backend files
 backend/
 railway.toml
 railway.json
 .railwayignore
 postman/
-env.example
-node_modules/
-.git/
-
-# Keep frontend files - don't exclude the frontend directory 
+env.example 
