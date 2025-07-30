@@ -4,7 +4,7 @@ const cors = require('cors');
 const http = require('http');
 // const socketIo = require('socket.io'); // Temporarily disabled for Railway deployment
 const dotenv = require('dotenv');
-const passport = require('./config/passport');
+// const passport = require('./config/passport'); // Temporarily disabled for Railway deployment
 
 // Import middleware
 const { errorHandler, notFound } = require('./middleware/errorHandler');
@@ -55,7 +55,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(requestLogger);
 
 // Passport middleware
-app.use(passport.initialize());
+// app.use(passport.initialize()); // Temporarily disabled for Railway deployment
 
 // Rate limiting
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -85,7 +85,7 @@ app.use('/api', apiLimiter);
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/social-auth', require('./routes/socialAuth'));
+// app.use('/api/social-auth', require('./routes/socialAuth')); // Temporarily disabled for Railway deployment
 app.use('/api/donations', require('./routes/donations'));
 app.use('/api/requests', require('./routes/requests'));
 app.use('/api/volunteers', require('./routes/volunteers'));
