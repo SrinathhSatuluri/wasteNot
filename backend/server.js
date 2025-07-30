@@ -10,7 +10,6 @@ const passport = require('./config/passport');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const {
   securityHeaders,
-  mongoSanitization,
   xssProtection,
   hppProtection,
   sanitizeInput,
@@ -38,7 +37,7 @@ const PORT = process.env.PORT || 5000;
 
 // Security middleware
 app.use(securityHeaders);
-app.use(mongoSanitization);
+// app.use(mongoSanitization); // Temporarily disabled due to Express compatibility
 app.use(xssProtection);
 app.use(hppProtection);
 app.use(sanitizeInput);
