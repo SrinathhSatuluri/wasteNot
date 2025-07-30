@@ -32,11 +32,17 @@ const corsOptions = {
       'http://localhost:3000',
       'http://localhost:3001',
       'https://wastenot.vercel.app',
-      'https://wastenot.netlify.app'
+      'https://wastenot.netlify.app',
+      'https://wastenot-production.up.railway.app'
     ];
     
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
+    
+    // Allow any Vercel deployment URL
+    if (origin.includes('vercel.app')) {
+      return callback(null, true);
+    }
     
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
