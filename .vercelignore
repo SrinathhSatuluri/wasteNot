@@ -1,0 +1,10 @@
+# Ignore backend files for frontend deployment
+backend/
+railway.toml
+railway.json
+.railwayignore
+postman/
+env.example
+
+# Keep frontend files
+!frontend/ 
