@@ -10,8 +10,6 @@ const passport = require('./config/passport');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const {
   securityHeaders,
-  xssProtection,
-  hppProtection,
   sanitizeInput,
   corsOptions,
   apiLimiter,
@@ -35,11 +33,11 @@ const io = socketIo(server, {
 
 const PORT = process.env.PORT || 5000;
 
-// Security middleware
+// Security middleware - temporarily simplified for deployment
 app.use(securityHeaders);
 // app.use(mongoSanitization); // Temporarily disabled due to Express compatibility
-app.use(xssProtection);
-app.use(hppProtection);
+// app.use(xssProtection); // Temporarily disabled due to Express compatibility
+// app.use(hppProtection); // Temporarily disabled due to Express compatibility
 app.use(sanitizeInput);
 
 // CORS
