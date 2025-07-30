@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 const passport = require('./config/passport');
 
 // Import middleware
-const { errorHandler, notFound, requestLogger } = require('./middleware/errorHandler');
+const { errorHandler, notFound } = require('./middleware/errorHandler');
 const {
   securityHeaders,
   mongoSanitization,
@@ -18,7 +18,8 @@ const {
   apiLimiter,
   authLimiter,
   donationLimiter,
-  requestLimiter
+  requestLimiter,
+  requestLogger
 } = require('./middleware/security');
 
 // Load environment variables
