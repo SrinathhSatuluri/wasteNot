@@ -4,6 +4,7 @@
   "description": "WasteNot Food Waste Rescue Platform",
   "scripts": {
     "start": "cd backend && npm start",
+    "build": "cd frontend && npm install && npm run build",
     "dev": "cd frontend && npm run dev"
   },
   "engines": {
