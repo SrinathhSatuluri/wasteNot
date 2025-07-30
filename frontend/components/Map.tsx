@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-// Temporarily disabled for deployment
+// Temporarily disabled for deployment - Vercel fix
 // import dynamic from 'next/dynamic';
 
 // // Dynamically import Leaflet components with no SSR
