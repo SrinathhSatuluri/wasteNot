@@ -5,6 +5,7 @@ railway.json
 .railwayignore
 postman/
 env.example
+node_modules/
+.git/
 
-# Keep frontend files
-!frontend/ 
+# Keep frontend files - don't exclude the frontend directory 
