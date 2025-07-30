@@ -7,9 +7,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { notifications } from "@/lib/notifications";
 import { API_ENDPOINTS } from "@/lib/api";
 import { SocialLoginButtons } from "@/components/SocialLoginButtons";
+import { Package, Truck, Building } from "lucide-react";
 
 export function RegisterForm({
   className,
@@ -24,6 +26,30 @@ export function RegisterForm({
   });
   const [error, setError] = useState("");
 
+  const roles = [
+    {
+      id: 'donor',
+      title: 'Food Donor',
+      description: 'Restaurants, grocery stores, bakeries, and individuals',
+      icon: Package,
+      color: 'bg-green-100 text-green-600'
+    },
+    {
+      id: 'volunteer',
+      title: 'Volunteer',
+      description: 'Individuals who help pick up and deliver food',
+      icon: Truck,
+      color: 'bg-blue-100 text-blue-600'
+    },
+    {
+      id: 'agency',
+      title: 'Agency/Organization',
+      description: 'Food banks, shelters, and community organizations',
+      icon: Building,
+      color: 'bg-purple-100 text-purple-600'
+    }
+  ];
+
   // Check if role was selected on home page
   useEffect(() => {
     const selectedRole = localStorage.getItem("selectedRole");
@@ -31,6 +57,11 @@ export function RegisterForm({
       setForm(prev => ({ ...prev, role: selectedRole }));
     }
   }, []);
+
+  const handleRoleSelect = (role: string) => {
+    setForm(prev => ({ ...prev, role }));
+    localStorage.setItem('selectedRole', role);
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,6 +82,8 @@ export function RegisterForm({
     }
   }
 
+  const selectedRoleData = roles.find(r => r.id === form.role);
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0 min-h-[700px] w-full max-w-6xl">
@@ -63,6 +96,43 @@ export function RegisterForm({
                   Join WasteNot and start making a difference!
                 </p>
               </div>
+
+              {/* Role Selection */}
+              <div className="space-y-3">
+                <Label>Your Role</Label>
+                <div className="grid grid-cols-3 gap-3">
+                  {roles.map((role) => {
+                    const IconComponent = role.icon;
+                    return (
+                      <div
+                        key={role.id}
+                        className={`cursor-pointer p-3 rounded-lg border-2 transition-all ${
+                          form.role === role.id
+                            ? 'border-green-500 bg-green-50'
+                            : 'border-gray-200 hover:border-green-300'
+                        }`}
+                        onClick={() => handleRoleSelect(role.id)}
+                      >
+                        <div className="text-center">
+                          <div className={`mx-auto w-8 h-8 rounded-full flex items-center justify-center mb-2 ${role.color}`}>
+                            <IconComponent className="h-4 w-4" />
+                          </div>
+                          <div className="text-xs font-medium">{role.title}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {selectedRoleData && (
+                  <div className="flex items-center justify-center space-x-2">
+                    <Badge className="bg-green-600">
+                      {selectedRoleData.icon && <selectedRoleData.icon className="h-3 w-3 mr-1" />}
+                      {selectedRoleData.title}
+                    </Badge>
+                  </div>
+                )}
+              </div>
+
               {error && (
                 <Alert variant="destructive">
                   <AlertTitle>Error</AlertTitle>
@@ -100,7 +170,7 @@ export function RegisterForm({
               </div>
 
               <Button type="submit" className="w-full" suppressHydrationWarning>
-                Register
+                Register as {selectedRoleData?.title}
               </Button>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">

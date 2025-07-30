@@ -20,10 +20,13 @@ const createRateLimiter = (windowMs = 15 * 60 * 1000, max = 100, message = 'Too 
 };
 
 // Different rate limits for different endpoints
-const authLimiter = createRateLimiter(15 * 60 * 1000, 5, 'Too many authentication attempts');
+const authLimiter = createRateLimiter(15 * 60 * 1000, 20, 'Too many authentication attempts. Please try again later.');
 const apiLimiter = createRateLimiter(15 * 60 * 1000, 100, 'Too many API requests');
 const donationLimiter = createRateLimiter(15 * 60 * 1000, 10, 'Too many donation requests');
 const requestLimiter = createRateLimiter(15 * 60 * 1000, 10, 'Too many request submissions');
+
+// Development-specific rate limiter (more lenient)
+const devAuthLimiter = createRateLimiter(15 * 60 * 1000, 50, 'Too many authentication attempts. Please try again later.');
 
 // CORS configuration
 const corsOptions = {
@@ -218,7 +221,9 @@ const validateApiKey = (req, res, next) => {
 };
 
 module.exports = {
+  createRateLimiter,
   authLimiter,
+  devAuthLimiter,
   apiLimiter,
   donationLimiter,
   requestLimiter,

@@ -1,4 +1,5 @@
 "use client";
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,10 +12,55 @@ import {
   Shield, 
   Globe,
   ArrowRight,
-  Leaf
+  Leaf,
+  Package,
+  Truck,
+  Building
 } from 'lucide-react';
 
 export default function HomePage() {
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+
+  const handleRoleSelect = (role: string) => {
+    setSelectedRole(role);
+    localStorage.setItem('selectedRole', role);
+  };
+
+  const handleGetStarted = () => {
+    if (!selectedRole) {
+      // If no role selected, show role selection
+      return;
+    }
+    // Role is already stored in localStorage, proceed to register
+  };
+
+  const roles = [
+    {
+      id: 'donor',
+      title: 'Food Donor',
+      description: 'Restaurants, grocery stores, bakeries, and individuals with excess food to donate',
+      icon: Package,
+      color: 'bg-green-100 text-green-600',
+      features: ['Post excess food items', 'Set pickup times', 'Track donation impact', 'Reduce food waste']
+    },
+    {
+      id: 'volunteer',
+      title: 'Volunteer',
+      description: 'Individuals who help pick up and deliver food donations to those in need',
+      icon: Truck,
+      color: 'bg-blue-100 text-blue-600',
+      features: ['Find pickup opportunities', 'Coordinate deliveries', 'Track your impact', 'Flexible scheduling']
+    },
+    {
+      id: 'agency',
+      title: 'Agency/Organization',
+      description: 'Food banks, shelters, and community organizations that receive donations',
+      icon: Building,
+      color: 'bg-purple-100 text-purple-600',
+      features: ['Browse available donations', 'Request specific items', 'Manage volunteers', 'Coordinate pickups']
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-stone-50">
       {/* Hero Section */}
@@ -40,7 +86,11 @@ export default function HomePage() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register">
-                <Button size="lg" className="bg-green-600 hover:bg-green-700">
+                <Button 
+                  size="lg" 
+                  className="bg-green-600 hover:bg-green-700"
+                  onClick={handleGetStarted}
+                >
                   Get Started
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -55,8 +105,75 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Role Selection Section */}
       <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Choose Your Role
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Select how you want to contribute to reducing food waste and helping communities
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {roles.map((role) => {
+              const IconComponent = role.icon;
+              return (
+                <Card 
+                  key={role.id}
+                  className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
+                    selectedRole === role.id 
+                      ? 'ring-2 ring-green-500 shadow-lg' 
+                      : 'hover:border-green-300'
+                  }`}
+                  onClick={() => handleRoleSelect(role.id)}
+                >
+                  <CardHeader className="text-center">
+                    <div className={`mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 ${role.color}`}>
+                      <IconComponent className="h-8 w-8" />
+                    </div>
+                    <CardTitle className="text-xl">{role.title}</CardTitle>
+                    <CardDescription className="text-sm">
+                      {role.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm">
+                      {role.features.map((feature, index) => (
+                        <li key={index} className="flex items-center">
+                          <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    {selectedRole === role.id && (
+                      <div className="mt-4">
+                        <Badge className="bg-green-600">Selected</Badge>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          {selectedRole && (
+            <div className="text-center">
+              <Link href="/register">
+                <Button size="lg" className="bg-green-600 hover:bg-green-700">
+                  Continue as {roles.find(r => r.id === selectedRole)?.title}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">

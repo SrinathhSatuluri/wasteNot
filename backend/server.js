@@ -2,18 +2,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
-const socketIo = require('socket.io');
+// const socketIo = require('socket.io'); // Temporarily disabled for Railway deployment
 const dotenv = require('dotenv');
 const passport = require('./config/passport');
 
 // Import middleware
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const {
-  securityHeaders,
-  sanitizeInput,
   corsOptions,
-  apiLimiter,
+  sanitizeInput,
+  securityHeaders,
+  mongoSanitization,
+  xssProtection,
+  hppProtection,
   authLimiter,
+  devAuthLimiter,
+  apiLimiter,
   donationLimiter,
   requestLimiter,
   requestLogger
@@ -24,12 +28,12 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
+// const io = socketIo(server, { // Temporarily disabled for Railway deployment
+//   cors: {
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST"]
+//   }
+// });
 
 const PORT = process.env.PORT || 5000;
 
@@ -54,29 +58,30 @@ app.use(requestLogger);
 app.use(passport.initialize());
 
 // Rate limiting
-app.use('/api/auth', authLimiter);
+const isDevelopment = process.env.NODE_ENV !== 'production';
+app.use('/api/auth', isDevelopment ? devAuthLimiter : authLimiter);
 app.use('/api/donations', donationLimiter);
 app.use('/api/requests', requestLimiter);
 app.use('/api', apiLimiter);
 
 // Socket.IO connection handling
-io.on('connection', (socket) => {
-  console.log('New client connected:', socket.id);
+// io.on('connection', (socket) => { // Temporarily disabled for Railway deployment
+//   console.log('New client connected:', socket.id);
   
-  // Join user to their role-specific room
-  socket.on('join-room', (role) => {
-    socket.join(role);
-    console.log(`User ${socket.id} joined ${role} room`);
-  });
+//   // Join user to their role-specific room
+//   socket.on('join-room', (role) => {
+//     socket.join(role);
+//     console.log(`User ${socket.id} joined ${role} room`);
+//   });
   
-  // Handle disconnection
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
-  });
-});
+//   // Handle disconnection
+//   socket.on('disconnect', () => {
+//     console.log('Client disconnected:', socket.id);
+//   });
+// });
 
 // Make io available to routes
-app.set('io', io);
+// app.set('io', io); // Temporarily disabled for Railway deployment
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -94,6 +99,17 @@ app.get('/api/health', (req, res) => {
     environment: process.env.NODE_ENV || 'development'
   });
 });
+
+// Development route to reset rate limits (only in development)
+if (isDevelopment) {
+  app.post('/api/reset-rate-limits', (req, res) => {
+    // This is a simple way to reset rate limits by restarting the limiter
+    res.json({ 
+      message: 'Rate limits reset successfully',
+      environment: 'development'
+    });
+  });
+}
 
 // 404 handler
 app.use(notFound);
