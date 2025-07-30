@@ -112,7 +112,7 @@ const MapComponent = ({ items, onItemClick, center = [40.7128, -74.0060], zoom =
 
   return (
     <MapContainer 
-      center={center} 
+      center={center as any} 
       zoom={zoom} 
       className="w-full h-96 rounded-lg"
     >
