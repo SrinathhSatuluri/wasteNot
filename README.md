@@ -1,10 +1,10 @@
-# 🍎 WasteNot - Food Waste Rescue Platform
+#  WasteNot - Food Waste Rescue Platform
 
 A comprehensive platform connecting food donors with food banks, shelters, and volunteers to reduce food waste and fight hunger.
 
-## 🚀 Features
+##  Features
 
-### ✅ **Core Features (Phase 1 Complete)**
+###  **Core Features (Phase 1 Complete)**
 - **User Authentication & Authorization**
   - Email/password registration and login
   - Social login (Google, Facebook, Apple) - Configured with fallbacks
@@ -43,7 +43,7 @@ A comprehensive platform connecting food donors with food banks, shelters, and v
   - Claim notifications
   - Status change alerts
 
-### 🔧 **Security & Performance (Phase 1 Must-Fixes)**
+###  **Security & Performance (Phase 1 Must-Fixes)**
 - **Comprehensive Input Validation**
   - Server-side validation with express-validator
   - Client-side form validation
@@ -73,7 +73,7 @@ A comprehensive platform connecting food donors with food banks, shelters, and v
   - Test scripts for all API calls
   - Comprehensive request/response examples
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 ### **Frontend**
 - **React 18** with Next.js 14 (App Router)
@@ -101,14 +101,14 @@ A comprehensive platform connecting food donors with food banks, shelters, and v
 - **Nodemon** for development
 - **Environment Variables** for configuration
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Node.js 18+ 
 - MongoDB Atlas account
 - Git
 - Postman (for API testing)
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### 1. **Clone the Repository**
 ```bash
@@ -174,7 +174,7 @@ npm run dev
 - Backend API: http://localhost:5000
 - API Health Check: http://localhost:5000/api/health
 
-## 📚 API Documentation
+##  API Documentation
 
 ### **Postman Collection**
 Import the complete API collection:
@@ -216,7 +216,7 @@ Import the complete API collection:
 - `GET /api/volunteers/:id` - Get volunteer details
 - `PUT /api/volunteers/:id/availability` - Update availability
 
-## 🔒 Security Features
+##  Security Features
 
 ### **Input Validation**
 - Comprehensive server-side validation
@@ -244,7 +244,7 @@ Import the complete API collection:
 - Comprehensive logging
 - Validation error formatting
 
-## 🧪 Testing
+##   Testing
 
 ### **API Testing with Postman**
 1. Import the collection and environment files
@@ -264,7 +264,7 @@ Import the complete API collection:
 - [ ] Error handling
 - [ ] Mobile responsiveness
 
-## 🚀 Deployment
+##   Deployment
 
 ### **Backend Deployment**
 1. Set up MongoDB Atlas cluster
@@ -296,7 +296,7 @@ Import the complete API collection:
 - Code splitting
 - Error boundaries
 
-## 🔧 Development
+##   Development
 
 ### **Code Structure**
 ```
@@ -345,7 +345,7 @@ wasteNot/
 ### **Environment Variables**
 See `.env.example` files in both backend and frontend directories for complete configuration options.
 
-## 🤝 Contributing
+##   Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -353,11 +353,11 @@ See `.env.example` files in both backend and frontend directories for complete c
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
+##   License
 
 This project is licensed under the MIT License.
 
-## 🆘 Support
+##   Support
 
 For support and questions:
 - Check the API documentation
